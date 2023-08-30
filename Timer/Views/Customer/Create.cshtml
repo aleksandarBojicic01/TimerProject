@@ -1,0 +1,42 @@
+﻿@model Customer
+
+<h2>Create Customer</h2>
+
+<form method="post">
+    <label asp-for="Name" class=" pb-2"></label>
+    <input asp-for="Name" class="form-control rounded shadow-none" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <br />
+    <label asp-for="Code" class="pb-2"></label>
+    <input asp-for="Code" class="form-control rounded shadow-none" />
+    <span asp-validation-for="Code" class="text-danger"></span>
+    <br />
+    <label asp-for="Address" class="pb-2"></label>
+    <input asp-for="Address" class="form-control rounded shadow-none" />
+    <span asp-validation-for="Address" class="text-danger"></span>
+    <br />
+    <label asp-for="City" class="pb-2"></label>
+    <input asp-for="City" class="form-control rounded shadow-none" />
+    <span asp-validation-for="City" class="text-danger"></span>
+    <br />
+    <label asp-for="Email" class="pb-2"></label>
+    <input asp-for="Email" class="form-control rounded shadow-none" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+    <br />
+    <label asp-for="Phone" class="pb-2"></label>
+    <input asp-for="Phone" class="form-control rounded shadow-none" />
+    <span asp-validation-for="Phone" class="text-danger"></span>
+    <br />
+    <label asp-for="Active" class=" pb-2"></label>
+    <input type="checkbox" asp-for="Active" class="" />
+    <span asp-validation-for="Active" class="text-danger"></span>
+    <br />
+
+    <button type="submit" class="btn btn-primary mt-3">Create Customer</button>
+    <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary mt-3">Back to List</a>
+</form>
+
+
+@{
+    <partial name="_ValidationScriptsPartial" />
+}

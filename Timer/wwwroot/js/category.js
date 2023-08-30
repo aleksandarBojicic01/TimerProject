@@ -5,11 +5,40 @@
 function loadDataTable() {
     dataTable = $('#tblCategories').DataTable({
         "ajax": { url: '/category/getall' },
+        "columnDefs" : [
+            {
+                "targets": [2, 3],
+                "className": "text-center",
+                "orderable": false,
+            }
+        ],
         "columns": [
             { data: 'name', "width": "15%" },
             { data: 'description', "width": "30%" },
-            { data: 'billable', "width": "10%" },
-            { data: 'active', "width": "10%" },
+          //  { data: 'billable', "width": "10%" },
+            {
+                data: 'billable',
+                "render": function (data) {
+                    if (data === true) {
+                        return '<input type="checkbox" checked name="id" onclick="return false" class="m-auto" style="vertical-align: middle; position: relative; ">'
+                    }
+                    return '<input type="checkbox" name="id" onclick="return false" class="m-auto">'
+                
+            },
+                "width": "10%"
+            },
+          {
+              data: 'active',
+              "render": function (data) {
+                  if (data === true) {
+                      return '<input type="checkbox" checked name="id" onclick="return false" class="m-auto" style="vertical-align: middle; position: relative; ">'
+                  }
+                  return '<input type="checkbox" name="id" onclick="return false" class="m-auto">'
+
+              },
+              "width": "10%"
+          },
+        // { data: 'active', "width": "10%" },
             { data: 'vat', "width": "10%" },
             {
                 data: 'id',

@@ -1,8 +1,111 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about ss<a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <div class="row-5 my-3">
+        <a asp-controller="" asp-action="" class="btn btn-primary"><i class="bi bi-plus-square"></i> &nbsp; Timer</a>
+	    <a asp-controller="" asp-action="" class="btn btn-primary"><i class="bi bi-plus-square"></i> &nbsp; Logger</a>
+        <a asp-controller="" asp-action="" class="btn btn-primary"><i class="bi bi-plus-square"></i> &nbsp; Overview</a>
+    </div>
 </div>
+<div class="row">
+
+
+<div class="col-6 my-3">
+<div class="col-7">
+    <label>Customer</label>
+    <select type="text" class="form-control" ><option selected disabled>--Select customer--</option></select>
+    <br/>
+    <label>Category</label>
+    <select type="text" class="form-control"><option selected disabled>--Select category--</option></select>
+    <br/>
+    <label>Task</label>
+    <select type="text" class="form-control"><option selected disabled>--Select task--</option></select>
+    <br/>
+    <label>Notes</label>
+    <textarea type="text" class="form-control" placeholder="Enter notes..."></textarea>
+    
+</div>
+    </div>
+
+<div class="col-6 my-4">
+    <div id="TimeDisplay" class="container border border-2 bg-success">
+        <div class="timer-display text-center p-5" style="font-size: 4rem">
+            00:00:00
+        </div>
+    </div>
+<div class="my-5  d-flex justify-content-center">
+    <button id="startBtn"  type="button" class="m-3 btn btn-primary">Start</button>
+    <button id="stopBtn" type="button" class="m-3 btn btn-danger">End</button>
+    <button id="resetBtn" type="button" class="m-3 btn btn-warning">Reset</button>
+</div>
+    </div>
+
+</div>
+
+
+
+<script src="~/js/site.js"></script>
+
+<script>
+    const timerDisplay = document.querySelector('.timer-display');
+    const startBtn = document.querySelector('#startBtn');
+    const stopBtn = document.querySelector('#stopBtn');
+    const resetBtn = document.querySelector('#resetBtn');
+
+    let startTime = 0;
+    let elapsedTime = 0;
+    let currentTime = 0;
+    let paused = true;
+    let intervalId;
+    let hrs = 00;
+    let mins = 00;
+    let secs =00;
+
+    startBtn.addEventListener('click', startTimer);
+    stopBtn.addEventListener('click', stopTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    function startTimer() {
+        if (paused) {
+            startTime = Date.now();
+            intervalId = setInterval(() => {
+                currentTime = Date.now();
+                elapsedTime = currentTime - startTime;
+                hrs = Math.floor(elapsedTime / 1000 / 60 / 60);
+                mins = Math.floor((elapsedTime / 1000 / 60 / 60 - hrs) * 60);
+                secs = Math.floor(((elapsedTime / 1000 / 60 / 60 - hrs) * 60 - mins) * 60);
+
+
+                timerDisplay.textContent = `${hrs}:${mins}:${secs}`;
+            
+            
+            }, 1000);
+            paused = false;
+        }
+    }
+
+
+    function stopTimer() {
+        if (!paused){
+        clearInterval(intervalId);
+        paused = true;};
+    }
+
+
+
+    function resetTimer() {
+        if (paused){
+        clearInterval(intervalId);
+        paused = true;
+        hrs = 00;
+        mins = 00;
+        secs = 00;
+        timerDisplay.textContent = `${hrs}:${mins}:${secs}`;};
+    }
+
+
+    
+    
+    
+</script>

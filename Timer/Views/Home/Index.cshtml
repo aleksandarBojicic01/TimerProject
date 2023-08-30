@@ -58,9 +58,9 @@
     let currentTime = 0;
     let paused = true;
     let intervalId;
-    let hrs = 00;
-    let mins = 00;
-    let secs =00;
+    let hrs = 0;
+    let mins = 0;
+    let secs =0;
 
     startBtn.addEventListener('click', startTimer);
     stopBtn.addEventListener('click', stopTimer);
@@ -98,9 +98,9 @@
         if (paused){
         clearInterval(intervalId);
         paused = true;
-        hrs = 00;
-        mins = 00;
-        secs = 00;
+        hrs = 0;
+        mins = 0;
+        secs = 0;
         timerDisplay.textContent = `${hrs}:${mins}:${secs}`;};
     }
 

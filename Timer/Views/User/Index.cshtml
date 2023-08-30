@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<Microsoft.AspNetCore.Identity.IdentityUser>
+
+<div class="row my-5">
+    <div class="col-6">
+        <h2>User List</h2>
+    </div>
+</div>
+
+<table id="tblUsers" class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+</table>
+
+@section Scripts {
+    <script src="~/js/user.js"></script>
+}

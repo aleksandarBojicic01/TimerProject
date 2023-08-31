@@ -109,13 +109,9 @@ namespace Timer.Controllers
                 _db.Tasks.Add(vm.Task);
                 _db.SaveChanges();
                 TempData["success"] = "Task added successfully!";
-                return RedirectToAction("Index");
+                
             }
-            else
-            {
-                TempData["error"] = "Error creating task!";
-                return View(vm);
-            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int? id)
@@ -166,13 +162,25 @@ namespace Timer.Controllers
                 _db.Tasks.Update(vm.Task);
                 _db.SaveChanges();
                 TempData["success"] = "Task updated successfully!";
-                return RedirectToAction("Index");
             }
-            else
+            return RedirectToAction("Index");
+        }
+
+        
+
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Task> taskList = _db.Tasks.ToList();
+            foreach (var task in taskList)
             {
-                TempData["error"] = "Error while updating task!";
-                return View(vm);
+                task.Category = _db.Categories.FirstOrDefault(c => c.Id == task.CategoryId);
+                task.Customer = _db.Customers.FirstOrDefault(c => c.Id == task.CustomerId);
+                task.IdentityUser = _db.Users.FirstOrDefault(c => c.Id == task.IdentityUserId);
             }
+           
+            return Json(new { data = taskList });
         }
 
         [HttpDelete]
@@ -193,5 +201,7 @@ namespace Timer.Controllers
             _db.SaveChanges();
             return Json(new { success = true, message = "Task deleted successfully!" });
         }
+
+        #endregion
     }
 }

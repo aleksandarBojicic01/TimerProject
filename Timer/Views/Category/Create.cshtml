@@ -1,33 +1,51 @@
 ﻿@model Category
 
-<h2>Create Category</h2>
+<h2 class="text-center">Create Category</h2>
 
-<form method="post">
-    <label asp-for="Name" class=" pb-2"></label>
-    <input asp-for="Name" class="form-control rounded shadow-none"/>
-    <span asp-validation-for="Name" class="text-danger"></span>
-    <br/>
-    <label asp-for="Description" class="pb-2"></label>
-    <textarea asp-for="Description" class="form-control rounded shadow-none" style="height: 7rem;"></textarea>
-    <span asp-validation-for="Description" class="text-danger"></span>
-    <br />
-    <label asp-for="Billable" class=" pb-2"></label>
-    <input type="checkbox" asp-for="Billable" class="" />
-    <span asp-validation-for="Billable" class="text-danger"></span>
-    <br />
-    <label asp-for="Active" class=" pb-2"></label>
-    <input type="checkbox" asp-for="Active" class="" />
-    <span asp-validation-for="Active" class="text-danger"></span>
-    <br />
-    <label asp-for="VAT" class=" pb-2"></label>
-    <input type="number" min="0" max="100" step="0.1" asp-for="VAT" class="" />
-    <span asp-validation-for="VAT" class="text-danger"></span>
-    <br />
+<div class="row d-flex justify-content-center">
+    <form method="post" class="col-lg-6 col-12">
+            <div class="row d-flex justify-content-center">
+                <hr/>
+                    <label asp-for="Name" class=" pb-2"></label>
+                    <input asp-for="Name" class="form-control rounded shadow-none"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <br/>
+                    <label asp-for="Description" class="pb-2"></label>
+                    <textarea asp-for="Description" class="form-control rounded shadow-none" style="height: 7rem;"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <br/>
 
-    <button type="submit" class="btn btn-primary mt-3">Add Category</button>
-    <a asp-controller="Category" asp-action="Index" class="btn btn-secondary mt-3">Back to List</a>
-</form>
 
+
+                <div class="row">
+                    <div class="col-3 text-group ps-0 ">
+                        <label asp-for="Billable" class=" pb-2"></label>
+                        <input type="checkbox" asp-for="Billable" class="" />
+                        <span asp-validation-for="Billable" class="text-danger"></span>
+                        
+                    </div>
+            
+                    <div class="col-6 text-group ">
+                        <label asp-for="Active" class=" pb-2"></label>
+                        <input type="checkbox" asp-for="Active" class="" />
+                        <span asp-validation-for="Active" class="text-danger"></span>
+                        
+                    </div>
+                </div>
+                
+                <div class="text-group ">
+                        <label asp-for="VAT" class=""></label>
+                        <input type="number" min="0" max="100" step="0.1" asp-for="VAT" class="" />
+                        <span asp-validation-for="VAT" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-5">Add Category</button>
+                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary mt-2">Back to List</a>
+            
+            </div>
+            
+    </form>
+</div>
 
 @{
     <partial name="_ValidationScriptsPartial"/>

@@ -1,42 +1,65 @@
 ﻿@model Customer
 
-<h2>Create Customer</h2>
+<h2 class="text-center">Create Customer</h2>
+<br/>
+<div class="row d-flex justify-content-center">
+    <form method="post" class="col-5 " class="">
+        <div class="row d-flex justify-content-center">
+            <hr/>
+            <label asp-for="Name" class=" pb-2"></label>
+            <input asp-for="Name" class="form-control rounded shadow-none" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <br />
+            <label asp-for="Code" class="pb-2"></label>
+            <input asp-for="Code" class="form-control rounded shadow-none" />
+            <span asp-validation-for="Code" class="text-danger"></span>
+            <br />
+            <label asp-for="Address" class="pb-2"></label>
+            <input asp-for="Address" class="form-control rounded shadow-none" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+            <br />
+            <label asp-for="City" class="pb-2"></label>
+            <input asp-for="City" class="form-control rounded shadow-none" />
+            <span asp-validation-for="City" class="text-danger"></span>
+            <br />
+            <label asp-for="Email" class="pb-2"></label>
+            <input asp-for="Email" class="form-control rounded shadow-none" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <br />
+            <label asp-for="Phone" class="pb-2"></label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required class="form-control rounded shadow-none">
+            <label>Format: 123/456-789</label>
+            <span asp-validation-for="Phone" class="text-danger"></span>
+            <br />
 
-<form method="post">
-    <label asp-for="Name" class=" pb-2"></label>
-    <input asp-for="Name" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Name" class="text-danger"></span>
-    <br />
-    <label asp-for="Code" class="pb-2"></label>
-    <input asp-for="Code" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Code" class="text-danger"></span>
-    <br />
-    <label asp-for="Address" class="pb-2"></label>
-    <input asp-for="Address" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Address" class="text-danger"></span>
-    <br />
-    <label asp-for="City" class="pb-2"></label>
-    <input asp-for="City" class="form-control rounded shadow-none" />
-    <span asp-validation-for="City" class="text-danger"></span>
-    <br />
-    <label asp-for="Email" class="pb-2"></label>
-    <input asp-for="Email" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Email" class="text-danger"></span>
-    <br />
-    <label asp-for="Phone" class="pb-2"></label>
-    <input asp-for="Phone" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Phone" class="text-danger"></span>
-    <br />
-    <label asp-for="Active" class=" pb-2"></label>
-    <input type="checkbox" asp-for="Active" class="" />
-    <span asp-validation-for="Active" class="text-danger"></span>
-    <br />
+            <div class="text text-group ">
+                <label asp-for="Active" class=" pb-2 "></label>
+                <input  type="checkbox" asp-for="Active" class="" />
+                <span asp-validation-for="Active" class="text-danger"></span>
+            </div>
+           
 
-    <button type="submit" class="btn btn-primary mt-3">Create Customer</button>
-    <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary mt-3">Back to List</a>
-</form>
+            <button type="submit" class="btn btn-primary mt-3 p-3">Create Customer</button>
+            <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary mt-3 p-3">Back to List</a>
 
+        </div>
+    </form>
+</div>
 
 @{
     <partial name="_ValidationScriptsPartial" />
 }
+<script src="~/js/site.js"></script>
+<script>
+    // Optional JavaScript for additional validation or formatting
+    const phoneNumberInput = document.getElementById("phoneNumber");
+
+    // You can add event listeners for further validation or formatting
+    phoneNumberInput.addEventListener("input", function () {
+        // Example: Format the input as the user types (e.g., add parentheses and dashes)
+        const value = this.value.replace(/\D/g, "");
+        if (value.length === 9) {
+            this.value = `${value.slice(0, 3)}/ ${value.slice(3, 6)}-${value.slice(6, 9)}`;
+        }
+    });
+</script>

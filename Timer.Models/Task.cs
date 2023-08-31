@@ -8,6 +8,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Timer.Models
 {
@@ -22,13 +23,16 @@ namespace Timer.Models
         public string Name { get; set; }
         public int CustomerId { get; set; }
         [ForeignKey("CustomerId")]
+        [ValidateNever]
         public Customer Customer { get; set; }
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
+        [ValidateNever]
         public Category Category { get; set; }
         public string IdentityUserId { get; set; }
         [DisplayName("Responsible")]
         [ForeignKey("IdentityUserId")]
+        [ValidateNever]
         public IdentityUser IdentityUser { get; set; }
         [Required]
         [DisplayName("Estimated Hrs.")]

@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Timer.DataAccess\Timer.DataAccess.csproj" />
+    <ProjectReference Include="..\Timer.Utility\Timer.Utility.csproj" />
   </ItemGroup>
 
 </Project>

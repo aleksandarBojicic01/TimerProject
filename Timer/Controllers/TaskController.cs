@@ -1,14 +1,17 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Timer.Models;
 using Timer.Models.Data;
 using Timer.Models.ViewModels;
+using Timer.Utility;
 using Task = Timer.Models.Task;
 
 namespace Timer.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
     public class TaskController : Controller
     {
         private readonly ApplicationDbContext _db;

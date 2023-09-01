@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Timer.Models.Data;
 using Timer.Models;
+using Timer.Utility;
 
 namespace Timer.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _db;

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Timer.Utility
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,22 +33,25 @@
                         <li class="nav-item px-2">
                             <a class="nav-link" asp-area="" asp-controller="Task" asp-action="Index">Tasks</a>
                         </li>
-                        <li class="nav-item dropdown px-2">
-                            <a class="nav-link text-black dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Settings
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li class="dropdown-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                                </li>
-                                <li class="dropdown-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
-                                </li>
-                                <li class="dropdown-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown px-2">
+                                <a class="nav-link text-black dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Settings
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li class="dropdown-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -62,7 +67,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Timer - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Timer - <a>Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -17,7 +17,7 @@ namespace Timer.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [DisplayName("Seq. No.")]
+        [DisplayName("Sequential Number")]
         public int SequentialNumber { get; set; }
         [Required]
         public string Name { get; set; }
@@ -35,7 +35,7 @@ namespace Timer.Models
         [ValidateNever]
         public IdentityUser IdentityUser { get; set; }
         [Required]
-        [DisplayName("Est. Hrs.")]
+        [DisplayName("Estimated Hours")]
         public int EstimatedHours { get; set; }
         [Required]
         [DisplayName("Start Date")]

@@ -11,7 +11,7 @@ using Task = Timer.Models.Task;
 
 namespace Timer.Controllers
 {
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+    [Authorize(Roles = SD.Role_Admin)]
     public class TaskController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -75,7 +75,6 @@ namespace Timer.Controllers
 
             return View(viewModel);
         }
-
         public IActionResult Create()
         {
             IEnumerable<SelectListItem> CategoryList = _db.Categories.Select(u => new SelectListItem
@@ -182,7 +181,7 @@ namespace Timer.Controllers
                 task.Customer = _db.Customers.FirstOrDefault(c => c.Id == task.CustomerId);
                 task.IdentityUser = _db.Users.FirstOrDefault(c => c.Id == task.IdentityUserId);
             }
-           
+
             return Json(new { data = taskList });
         }
 

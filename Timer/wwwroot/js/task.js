@@ -13,8 +13,6 @@ function loadDataTable() {
             { data: 'category.name', "width": "10%" },
             { data: 'identityUser.userName', "width": "15%" },
             { data: 'estimatedHours', "width": "5%" },
-            //{ data: 'startDate', "width": "10%" },
-            //{ data: 'endDate', "width": "10%" },
             {
                 "data": "startDate",
                 "render": function (data, type, row) {
@@ -53,8 +51,6 @@ function loadDataTable() {
         ]
     });
 }
-
-
 
 const table = document.querySelector('#tblTasks'); 
 function Delete(url) {

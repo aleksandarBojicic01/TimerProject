@@ -7,6 +7,7 @@ namespace Timer.Controllers
     public class OverviewController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private static OverviewVM? vm;
         public OverviewController(ApplicationDbContext db)
         {
             _db = db;
@@ -16,10 +17,7 @@ namespace Timer.Controllers
             var OverviewVM = new OverviewVM
             {
                 TimeLogs = _db.TimeLogs.ToList(),
-                Customers = _db.Customers.ToList(),
-                Categories = _db.Categories.ToList(),
-                Tasks = _db.Tasks.ToList(),
-                Users = _db.Users.ToList()
+              
             };
             return View(OverviewVM);
         }
@@ -28,83 +26,47 @@ namespace Timer.Controllers
         {
             var timeLogsQuery = _db.TimeLogs.AsQueryable();
 
-            if (!string.IsNullOrEmpty(viewModel.SelectedCustomer))
-            {
-                timeLogsQuery = timeLogsQuery.Where(t => t.CustomerId.ToString() == viewModel.SelectedCustomer);
-            }
-
-            if (!string.IsNullOrEmpty(viewModel.SelectedCategory))
-            {
-                timeLogsQuery = timeLogsQuery.Where(t => t.CategoryId.ToString() == viewModel.SelectedCategory);
-            }
 
             if (viewModel.StartDate.HasValue || viewModel.EndDate.HasValue)
             {
                 timeLogsQuery = timeLogsQuery.Where(t =>
-                                   (!viewModel.StartDate.HasValue || t.EndDate >= viewModel.StartDate) &&
-                                                      (!viewModel.EndDate.HasValue || t.StartDate <= viewModel.EndDate));
+                                   (!viewModel.StartDate.HasValue || t.Date >= viewModel.StartDate) &&
+                                                      (!viewModel.EndDate.HasValue || t.Date <= viewModel.EndDate));
             }
 
-            if (!string.IsNullOrEmpty(viewModel.SelectedUser))
-            {
-                timeLogsQuery = timeLogsQuery.Where(t => t.IdentityUserId == viewModel.SelectedUser);
-            }
-
+        
             viewModel.TimeLogs = timeLogsQuery.ToList();
-            viewModel.Customers = _db.Customers.ToList();
-            viewModel.Categories = _db.Categories.ToList();
-            viewModel.Tasks = _db.Tasks.ToList();
-            viewModel.Users = _db.Users.ToList();
+            
+
+            vm = viewModel;
 
             return View(viewModel);
         }
 
-        public IActionResult TimeLog()
+
+
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            var OverviewVM = new OverviewVM
+            List<TimeLog> timeLogList;
+            if (vm == null)
             {
-                TimeLogs = _db.TimeLogs.ToList(),
-                Customers = _db.Customers.ToList(),
-                Categories = _db.Categories.ToList(),
-                Tasks = _db.Tasks.ToList(),
-                Users = _db.Users.ToList()
-            };
-            return View();
-        }
-        [HttpPost]
-        public IActionResult TimeLog(OverviewVM viewModel)
-        {
-            var timeLogsQuery = _db.TimeLogs.AsQueryable();
-
-            if (!string.IsNullOrEmpty(viewModel.SelectedCustomer))
+                timeLogList = _db.TimeLogs.ToList();
+            }
+            else
             {
-                timeLogsQuery = timeLogsQuery.Where(t => t.CustomerId.ToString() == viewModel.SelectedCustomer);
+                timeLogList = vm.TimeLogs.ToList();
+                vm = null;
+            }
+            
+            foreach (var log in timeLogList)
+            {                             
+                log.Task = _db.Tasks.FirstOrDefault(t => t.Id == log.TaskId);
+                log.Customer = _db.Customers.FirstOrDefault(c => c.Id == log.CustomerId);
+                log.Category = _db.Categories.FirstOrDefault(c => c.Id == log.CategoryId);
             }
 
-            if (!string.IsNullOrEmpty(viewModel.SelectedCategory))
-            {
-                timeLogsQuery = timeLogsQuery.Where(t => t.CategoryId.ToString() == viewModel.SelectedCategory);
-            }
-
-            if (viewModel.StartDate.HasValue || viewModel.EndDate.HasValue)
-            {
-                timeLogsQuery = timeLogsQuery.Where(t =>
-                                                  (!viewModel.StartDate.HasValue || t.EndDate >= viewModel.StartDate) &&
-                                                                                                       (!viewModel.EndDate.HasValue || t.StartDate <= viewModel.EndDate));
-            }
-
-            if (!string.IsNullOrEmpty(viewModel.SelectedUser))
-            {
-                timeLogsQuery = timeLogsQuery.Where(t => t.IdentityUserId == viewModel.SelectedUser);
-            }
-
-            viewModel.TimeLogs = timeLogsQuery.ToList();
-            viewModel.Customers = _db.Customers.ToList();
-            viewModel.Categories = _db.Categories.ToList();
-            viewModel.Tasks = _db.Tasks.ToList();
-            viewModel.Users = _db.Users.ToList();
-
-            return View(viewModel);
+            return Json(new { data = timeLogList });
         }
     }
 }

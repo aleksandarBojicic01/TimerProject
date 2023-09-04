@@ -3,7 +3,7 @@
 <h2 class="text-center">Create Customer</h2>
 <br/>
 <div class="row d-flex justify-content-center">
-    <form method="post" class="col-5 " class="">
+    <form method="post" class="col-5">
         <div class="row d-flex justify-content-center">
             <hr/>
             <label asp-for="Name" class=" pb-2"></label>
@@ -27,9 +27,9 @@
             <span asp-validation-for="Email" class="text-danger"></span>
             <br />
             <label asp-for="Phone" class="pb-2"></label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required class="form-control rounded shadow-none">
-            <label>Format: 123/456-789</label>
+            <input asp-for="Phone" id="phoneNumber" placeholder="Enter customer phone number" class="form-control rounded shadow-none" />
             <span asp-validation-for="Phone" class="text-danger"></span>
+            <label>Format: 123/456-789</label>
             <br />
 
             <div class="text text-group ">
@@ -46,9 +46,12 @@
     </form>
 </div>
 
-@{
-    <partial name="_ValidationScriptsPartial" />
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
 }
+
 <script src="~/js/site.js"></script>
 <script>
     // Optional JavaScript for additional validation or formatting
@@ -59,7 +62,7 @@
         // Example: Format the input as the user types (e.g., add parentheses and dashes)
         const value = this.value.replace(/\D/g, "");
         if (value.length === 9) {
-            this.value = `${value.slice(0, 3)}/ ${value.slice(3, 6)}-${value.slice(6, 9)}`;
+            this.value = `${value.slice(0, 3)}/${value.slice(3, 6)}-${value.slice(6, 9)}`;
         }
     });
 </script>

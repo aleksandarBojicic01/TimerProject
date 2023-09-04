@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Timer.Models;
+using Timer.Utility;
 
 namespace Timer.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

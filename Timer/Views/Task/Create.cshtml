@@ -1,50 +1,59 @@
 ﻿@model CreateTaskVM
 
-<h2>Create Task</h2>
+<h2 class="text-center">Create Task</h2>
 
-<form method="post">
-    <label asp-for="Task.SequentialNumber" class=" pb-2"></label>
-    <input asp-for="Task.SequentialNumber" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Task.SequentialNumber" class="text-danger"></span>
-    <br />
-    <label asp-for="Task.Name" class=" pb-2"></label>
-    <input asp-for="Task.Name" class="form-control rounded shadow-none"/>
-    <span asp-validation-for="Task.Name" class="text-danger"></span>
-    <br/>
-    <label asp-for="Task.CustomerId" class=" pb-2"></label>
-    <select asp-for="Task.CustomerId" asp-items="@Model.Customers" class="form-control rounded shadow-none"></select>
-    <span asp-validation-for="Task.CustomerId" class="text-danger"></span>
-    <br/>
-    <label asp-for="Task.CategoryId" class=" pb-2"></label>
-    <select asp-for="Task.CategoryId" asp-items="@Model.Categories" class="form-control rounded shadow-none"></select>
-    <span asp-validation-for="Task.CategoryId" class="text-danger"></span>
-    <br/>
-    <label asp-for="Task.IdentityUserId" class=" pb-2"></label>
-    <select asp-for="Task.IdentityUserId" asp-items="@Model.Users" class="form-control rounded shadow-none"></select>
-    <span asp-validation-for="Task.IdentityUserId" class="text-danger"></span>
-    <br/>
-    <label asp-for="Task.EstimatedHours" class=" pb-2"></label>
-    <input type="number" asp-for="Task.EstimatedHours" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Task.EstimatedHours" class="text-danger"></span>
-    <br/>
-    <label asp-for="Task.StartDate" class="pb-2"></label>
-    <input type="date" asp-for="Task.StartDate" value="" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Task.StartDate" class="text-danger"></span>
-    <br/>
-    <label asp-for="Task.EndDate" class=" pb-2"></label>
-    <input type="date" asp-for="Task.EndDate" value="" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Task.EndDate" class="text-danger"></span>
-    <br/>
-    <label asp-for="Task.Priority" class=" pb-2"></label>
-    <input type="number" asp-for="Task.Priority" class="form-control rounded shadow-none" />
-    <span asp-validation-for="Task.Priority" class="text-danger"></span>
-    <br/>
+<div class="row d-flex justify-content-center">
+    <form method="post" class="col-6">
+        <label asp-for="Task.Name" class=" pb-2"></label>
+        <input asp-for="Task.Name" class="form-control rounded shadow-none"/>
+        <span asp-validation-for="Task.Name" class="text-danger"></span>
+        <br/>
+        <label asp-for="Task.CustomerId" class=" pb-2"></label>
+        <select asp-for="Task.CustomerId" asp-items="@Model.Customers" class="form-select rounded"></select>
+        <span asp-validation-for="Task.CustomerId" class="text-danger"></span>
+        <br/>
+        <label asp-for="Task.CategoryId" class=" pb-2"></label>
+        <select asp-for="Task.CategoryId" asp-items="@Model.Categories" class="form-select rounded shadow-none"></select>
+        <span asp-validation-for="Task.CategoryId" class="text-danger"></span>
+        <br/>
+        <label asp-for="Task.IdentityUserId" class=" pb-2"></label>
+        <select asp-for="Task.IdentityUserId" asp-items="@Model.Users" class="form-select rounded shadow-none"></select>
+        <span asp-validation-for="Task.IdentityUserId" class="text-danger"></span>
+        <br/>
+        <div class="row">
+            <div class="col-6">
+                <label asp-for="Task.SequentialNumber" class="pb-2"></label>
+                <input asp-for="Task.SequentialNumber" class="form-control rounded shadow-none"/>
+                <span asp-validation-for="Task.SequentialNumber" class="text-danger"></span>
+            </div>
+            <div class="col-6">
+                <label asp-for="Task.EstimatedHours" class="pb-2"></label>
+                <input type="number" asp-for="Task.EstimatedHours" class="form-control rounded shadow-none"/>
+                <span asp-validation-for="Task.EstimatedHours" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <label asp-for="Task.StartDate" class="pb-2"></label>
+        <input type="date" asp-for="Task.StartDate" value="" class="form-control rounded shadow-none" />
+        <span asp-validation-for="Task.StartDate" class="text-danger"></span>
+        <br/>
+        <label asp-for="Task.EndDate" class=" pb-2"></label>
+        <input type="date" asp-for="Task.EndDate" value="" class="form-control rounded shadow-none" />
+        <span asp-validation-for="Task.EndDate" class="text-danger"></span>
+        <br/>
+        <label asp-for="Task.Priority" class=" pb-2"></label>
+        <input type="number" asp-for="Task.Priority" class="form-control rounded shadow-none" />
+        <span asp-validation-for="Task.Priority" class="text-danger"></span>
+        <br/>
     
-    <button type="submit" class="btn btn-primary mt-3">Create Task</button>
-    <a asp-controller="Task" asp-action="Index" class="btn btn-secondary mt-3">Back to Tasks</a>
+        <button type="submit" class="btn btn-primary mt-3">Create Task</button>
+        <a asp-controller="Task" asp-action="Index" class="btn btn-secondary mt-3">Back to Tasks</a>
 
-</form>
+    </form>
+</div>
 
-@{
-    <partial name="_ValidationScriptsPartial" />
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
 }

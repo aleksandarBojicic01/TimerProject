@@ -24,6 +24,7 @@ using Timer.Utility;
 
 namespace Timer.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

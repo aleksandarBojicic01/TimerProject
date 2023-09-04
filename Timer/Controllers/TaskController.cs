@@ -15,6 +15,7 @@ namespace Timer.Controllers
     public class TaskController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private static TaskVM? vm;
         public TaskController(ApplicationDbContext db)
         {
             _db = db;
@@ -66,12 +67,11 @@ namespace Timer.Controllers
 
             viewModel.Tasks = tasksQuery.ToList();
 
-        
             viewModel.Customers = _db.Customers.ToList();
             viewModel.Categories = _db.Categories.ToList();
             viewModel.Users = _db.Users.ToList();
 
-          
+            vm = viewModel;
 
             return View(viewModel);
         }
@@ -174,7 +174,17 @@ namespace Timer.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Task> taskList = _db.Tasks.ToList();
+            List<Task> taskList;
+            if (vm == null)
+            {
+               taskList = _db.Tasks.ToList();
+               vm = null;
+            }
+            else
+            {
+                taskList = vm.Tasks.ToList();
+            }
+
             foreach (var task in taskList)
             {
                 task.Category = _db.Categories.FirstOrDefault(c => c.Id == task.CategoryId);

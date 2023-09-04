@@ -1,0 +1,74 @@
+﻿@model LoggerVM
+
+<div>
+    <div class="my-3">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Timer</a>
+        <a asp-controller="Logger" asp-action="Index" class="btn btn-secondary">Logger</a>
+        <a asp-controller="Overview" asp-action="Index" class="btn btn-primary">Overview</a>
+    </div>
+</div>
+<hr />
+<div class="row d-flex justify-content-center">
+    <form method="post" class="col-lg-6 col-12">
+        <div class="row d-flex justify-content-center">
+
+            <input asp-for="TimeLog.UserId" hidden/>
+            <input asp-for="TimeLog.Duration" hidden/>
+            <input asp-for="TimeLog.Billable" hidden/>
+            <input asp-for="TimeLog.Id" hidden/>
+            <div class="py-2">
+                <label asp-for="TimeLog.CustomerId">Customer:</label>
+                <select class="form-select" asp-for="TimeLog.CustomerId" asp-items="@Model.Customers">
+                    <option value="">All</option>
+                </select>
+                <span asp-validation-for="TimeLog.CustomerId" class="text-danger"></span>
+            </div>
+            <div class="py-2">
+                <label asp-for="TimeLog.CategoryId">Category:</label>
+                <select class="form-select" asp-for="TimeLog.CategoryId" asp-items="@Model.Categories">
+                    <option value="">All</option>
+                </select>
+                <span asp-validation-for="TimeLog.CategoryId" class="text-danger"></span>
+            </div >
+            <div class="py-2">
+                <label asp-for="TimeLog.TaskId">Task:</label>
+                <select class="form-select" asp-for="TimeLog.TaskId" asp-items="@Model.Tasks">
+                    <option value="">All</option>
+                </select>
+                <span asp-validation-for="TimeLog.TaskId" class="text-danger"></span>
+            </div>
+            <div class="py-2">
+                <label asp-for="TimeLog.Notes">Notes:</label>
+                <textarea asp-for="TimeLog.Notes" type="text" class="form-control" placeholder="Enter notes..."></textarea>
+            </div>
+
+            <div class="py-2">
+                <label asp-for="TimeLog.Billable"></label>
+                <input type="checkbox" asp-for="TimeLog.Billable"/>
+                <span asp-validation-for="TimeLog.Billable" class="text-danger"></span>
+            </div>
+
+            <div class="py-2">
+                <label asp-for="TimeLog.Date" class="me-1">Date: </label>
+                <input type="date" asp-for="TimeLog.Date" value=""/>
+                <span asp-validation-for="TimeLog.Date" class="text-danger"></span>
+            </div>
+
+            <div class="py-2">
+                <label asp-for="TimeLog.StartTime" class="me-1">Start Time:</label>
+                <input type="time" asp-for="TimeLog.StartTime" value="" class="me-3"/>
+                <span asp-validation-for="TimeLog.StartTime" class="text-danger"></span>
+                <label asp-for="TimeLog.EndTime" class="me-1">End Time:</label>
+                <input type="time" asp-for="TimeLog.EndTime" value=""/>
+                <span asp-validation-for="TimeLog.EndTime" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary my-4">Log Time</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

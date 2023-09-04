@@ -178,11 +178,11 @@ namespace Timer.Controllers
             if (vm == null)
             {
                taskList = _db.Tasks.ToList();
-               vm = null;
             }
             else
             {
                 taskList = vm.Tasks.ToList();
+                vm = null;
             }
 
             foreach (var task in taskList)

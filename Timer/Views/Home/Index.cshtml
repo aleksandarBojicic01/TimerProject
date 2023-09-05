@@ -1,110 +1,161 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model LoggerVM
+
 <div>
     <div class="row-5 my-3">
-        <a asp-controller="" asp-action="" class="btn btn-secondary">  Timer</a>
-	    <a asp-controller="" asp-action="" class="btn btn-primary">  Logger</a>
-        <a asp-controller="Overview" asp-action="Index" class="btn btn-primary">  Overview</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Timer</a>
+	    <a asp-controller="Logger" asp-action="Index" class="btn btn-primary">Logger</a>
+        <a asp-controller="Overview" asp-action="Index" class="btn btn-primary">Overview</a>
     </div>
 </div>
 <hr />
 
+<form method="post">
 <div class="row">
     <div class="col-6 my-3">
         <div class="col-7">
-            <label>Customer</label>
-            <select type="text" class="form-control" ><option selected disabled>--Select customer--</option></select>
-            <br/>
-            <label>Category</label>
-            <select type="text" class="form-control"><option selected disabled>--Select category--</option></select>
-            <br/>
-            <label>Task</label>
-            <select type="text" class="form-control"><option selected disabled>--Select task--</option></select>
-            <br/>
-            <label>Notes</label>
-            <textarea type="text" class="form-control" placeholder="Enter notes..."></textarea>    
+            <input asp-for="TimeLog.UserId" hidden />
+            <input asp-for="TimeLog.Duration" hidden />
+            <input asp-for="TimeLog.Id" hidden />
+            <div class="py-2">
+                <label asp-for="TimeLog.CustomerId">Customer:</label>
+                <select id="cust-select" class="form-select" asp-for="TimeLog.CustomerId" asp-items="@Model.Customers">
+                    <option value="">All</option>
+                </select>
+                <span asp-validation-for="TimeLog.CustomerId" class="text-danger"></span>
+            </div>
+            <div class="py-2">
+                <label asp-for="TimeLog.CategoryId">Category:</label>
+                <select id="cat-select" class="form-select" asp-for="TimeLog.CategoryId" asp-items="@Model.Categories">
+                    <option value="">All</option>
+                </select>
+                <span asp-validation-for="TimeLog.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="py-2">
+                <label asp-for="TimeLog.TaskId">Task:</label>
+                    <select id="task-select" class="form-select" asp-for="TimeLog.TaskId" asp-items="@Model.Tasks">
+                    <option value="">All</option>
+                </select>
+                <span asp-validation-for="TimeLog.TaskId" class="text-danger"></span>
+            </div>
+                <div class="py-2">
+                    <label asp-for="TimeLog.Billable"></label>
+                    <input id="TimeLog_Billable" type="checkbox" asp-for="TimeLog.Billable" />
+                    <span asp-validation-for="TimeLog.Billable" class="text-danger"></span>
+                </div>
+
+            <div class="py-2">
+                <label asp-for="TimeLog.Notes">Notes:</label>
+                <textarea id="notesarea" asp-for="TimeLog.Notes" type="text" class="form-control" placeholder="Enter notes..."></textarea>
+            </div>
         </div>
     </div>
 
     <div class="col-6 my-4">
-        <div id="TimeDisplay" class="container border border-2 bg-success">
+        <div id="TimeDisplay" class="container border border-2 bg-body-secondary rounded">
             <div class="timer-display text-center p-5" style="font-size: 4rem">
-                00:00:00
+                <p><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></p>
             </div>
         </div>
         <div class="my-5  d-flex justify-content-center">
-            <button id="startBtn"  type="button" class="m-3 btn btn-primary">Start</button>
-            <button id="stopBtn" type="button" class="m-3 btn btn-danger">End</button>
-            <button id="resetBtn" type="button" class="m-3 btn btn-warning">Reset</button>
+            <button type="button" id="button-start"
+                    class="m-3 btn btn-primary"
+                    data-customer-id="@Model.TimeLog.CustomerId"
+                    data-category-id="@Model.TimeLog.CategoryId"
+                    data-task-id="@Model.TimeLog.TaskId"
+                    data-billable="@Model.TimeLog.Billable"
+                    data-notes = "@Model.TimeLog.Notes"
+                    data-url="@Url.Action("StartTimer", "Home")">
+                Start
+            </button>
+            @*<a type="submit" href="@Url.Action("StartTimer", "Home")" id="button-start" class="m-3 btn btn-primary">Start</a>*@
+            <button type="submit" id="button-stop" class="m-3 btn btn-danger">End</button>
         </div>
     </div>
-
 </div>
+</form>
 
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/site.js"></script>
-
+<script src="~/js/log.js"></script>
 <script>
-    const timerDisplay = document.querySelector('.timer-display');
-    const startBtn = document.querySelector('#startBtn');
-    const stopBtn = document.querySelector('#stopBtn');
-    const resetBtn = document.querySelector('#resetBtn');
+    window.onload = function () {
+        var seconds = 00; 
+        var minutes = 00;
+        var hours = 00;
+        var appendSeconds = document.getElementById("seconds");
+        var appendMinutes = document.getElementById("minutes");
+        var appendHours = document.getElementById("hours");
+        var buttonStart = document.getElementById('button-start');
+        var buttonStop = document.getElementById('button-stop');
+        var Interval ;
 
-    let startTime = 0;
-    let elapsedTime = 0;
-    let currentTime = 0;
-    let paused = true;
-    let intervalId;
-    let hrs = 0;
-    let mins = 0;
-    let secs =0;
+        buttonStart.onclick = function() {
+            if (document.getElementById("cust-select").value !== "" &&
+                document.getElementById("cat-select").value !== "" &&
+                document.getElementById("task-select").value !== "") {
 
-    startBtn.addEventListener('click', startTimer);
-    stopBtn.addEventListener('click', stopTimer);
-    resetBtn.addEventListener('click', resetTimer);
-
-    function startTimer() {
-        if (paused) {
-            startTime = Date.now();
-            intervalId = setInterval(() => {
-                currentTime = Date.now();
-                elapsedTime = currentTime - startTime;
-                hrs = Math.floor(elapsedTime / 1000 / 60 / 60);
-                mins = Math.floor((elapsedTime / 1000 / 60 / 60 - hrs) * 60);
-                secs = Math.floor(((elapsedTime / 1000 / 60 / 60 - hrs) * 60 - mins) * 60);
-
-
-                timerDisplay.textContent = `${hrs}:${mins}:${secs}`;
-            
-            
-            }, 1000);
-            paused = false;
+                clearInterval(Interval);
+                Interval = setInterval(startTimer, 1000);
+            }
         }
-    }
+  
+        buttonStop.onclick = function() {
 
-
-    function stopTimer() {
-        if (!paused){
-        clearInterval(intervalId);
-        paused = true;};
-    }
-
-
-
-    function resetTimer() {
-        if (paused){
-        clearInterval(intervalId);
-        paused = true;
-        hrs = 0;
-        mins = 0;
-        secs = 0;
-        timerDisplay.textContent = `${hrs}:${mins}:${secs}`;};
-    }
-
-
+            clearInterval(Interval);
+            seconds = "00";
+            minutes = "00";
+            hours = "00";
+            appendSeconds.innerHTML = seconds;
+            appendMinutes.innerHTML = minutes;
+            appendHours.innerHTML = hours;
+        }
+  
+   
+  
+        function startTimer () {
+            seconds++; 
     
+            if(seconds <= 9){
+                appendSeconds.innerHTML = "0" + seconds;
+            }
     
+            if (seconds > 9){
+                appendSeconds.innerHTML = seconds;
+      
+            } 
     
+            if (seconds > 59) {
+                minutes++;
+                appendMinutes.innerHTML = "0" + minutes;
+                seconds = 0;
+                appendSeconds.innerHTML = "0" + 0;
+            }
+    
+            if (minutes > 9){
+                appendMinutes.innerHTML = minutes;
+            }
+
+            if (minutes > 59) {
+                hours++;
+                appendHours.innerHTML = "0" + hours;
+                minutes = 0;
+                seconds = 0;
+                appendMinutes.InnerHTML = "0" + 0;
+                appendSeconds.innerHTML = "0" + 0;
+            }
+    
+            if (hours > 9){
+                appendHours.innerHTML = hours;
+            }
+  
+        }
+        
+    }
 </script>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

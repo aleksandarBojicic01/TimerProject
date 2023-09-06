@@ -19,10 +19,8 @@ function loadDataTable() {
                 data: 'date',
                 "render": function (date, type, row) {
                     if (type === 'display' || type === 'filter') {
-                        // Format date for display and filtering
                         return moment(date).format('DD/MM/YYYY');
                     }
-                    // Use the original data for sorting and other operations
                     return date;
                 },
                 "width": "15%"

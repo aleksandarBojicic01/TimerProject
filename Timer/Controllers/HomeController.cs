@@ -7,6 +7,7 @@ using Timer.Models.ViewModels;
 using Timer.Utility;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace Timer.Controllers
 {
@@ -15,7 +16,6 @@ namespace Timer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _db;
-        private static LoggerVM? vm;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
         {
@@ -48,41 +48,57 @@ namespace Timer.Controllers
                 Categories = CategoryList,
                 Customers = CustomerList
             };
-            if (vm == null)
+            var storedVm = TempData["LoggerVM"] as LoggerVM;
+            if (storedVm == null)
             {
-                vm = loggerVM;
+                storedVm = loggerVM;
             }
 
-            return View(vm);
+            return View(storedVm);
         }
         [HttpPost]
-        public void StartTimer([FromBody]LoggerVM passedVm)
+        public void StartTimer([FromBody]LoggerVM? passedVm)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            passedVm.TimeLog.UserId = userId;
-            passedVm.TimeLog.Date = DateTime.Now;
-            passedVm.TimeLog.StartTime = DateTime.Now.TimeOfDay;
-            vm = passedVm;
-            TempData["success"] = "Timer started!";
+            if (passedVm != null &&
+                passedVm.TimeLog.CategoryId != 0 &&
+                passedVm.TimeLog.CustomerId != 0 &&
+                passedVm.TimeLog.TaskId != 0 &&
+                passedVm.TimeLog.Notes != "")
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                passedVm.TimeLog.UserId = userId;
+                passedVm.TimeLog.Date = DateTime.Now;
+                passedVm.TimeLog.StartTime = DateTime.Now.TimeOfDay;
+                TempData["LoggerVM"] = JsonConvert.SerializeObject(passedVm);
+            }
         }
 
         [HttpPost]
         public IActionResult Index(LoggerVM passedVm)
         {
-            if (vm != null)
+            var storedVmJson = TempData["LoggerVM"] as string;
+            if (!string.IsNullOrEmpty(storedVmJson))
             {
-                vm.TimeLog.EndTime = DateTime.Now.TimeOfDay;
-                vm.TimeLog.Duration = vm.TimeLog.EndTime - vm.TimeLog.StartTime;
+                LoggerVM? storedVm = JsonConvert.DeserializeObject<LoggerVM>(storedVmJson);
 
-                if (ModelState.IsValid)
+                if (storedVm != null && !String.IsNullOrEmpty(storedVm.TimeLog.UserId))
                 {
-                    _db.TimeLogs.Add(vm.TimeLog);
-                    _db.SaveChanges();
-                    TempData["success"] = "Time Log entry added!";
-                    vm = null;
+                    storedVm.TimeLog.EndTime = DateTime.Now.TimeOfDay;
+                    storedVm.TimeLog.Duration = storedVm.TimeLog.EndTime - storedVm.TimeLog.StartTime;
+
+                    if (ModelState.IsValid)
+                    {
+                        _db.TimeLogs.Add(storedVm.TimeLog);
+                        _db.SaveChanges();
+                        TempData["success"] = "Time Log entry added!";
+                        storedVm = null;
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "Cannot stop timer without it being started!";
                 }
             }
-
             return RedirectToAction("Index");
         }
 

@@ -19,21 +19,21 @@
             <div class="py-2">
                 <label asp-for="TimeLog.CustomerId">Customer:</label>
                 <select class="form-select" asp-for="TimeLog.CustomerId" asp-items="@Model.Customers">
-                    <option value="">All</option>
+                    <option value="">-- Select Customer --</option>
                 </select>
                 <span asp-validation-for="TimeLog.CustomerId" class="text-danger"></span>
             </div>
             <div class="py-2">
                 <label asp-for="TimeLog.CategoryId">Category:</label>
                 <select class="form-select" asp-for="TimeLog.CategoryId" asp-items="@Model.Categories">
-                    <option value="">All</option>
+                    <option value="">-- Select Category --</option>
                 </select>
                 <span asp-validation-for="TimeLog.CategoryId" class="text-danger"></span>
             </div >
             <div class="py-2">
                 <label asp-for="TimeLog.TaskId">Task:</label>
                 <select class="form-select" asp-for="TimeLog.TaskId" asp-items="@Model.Tasks">
-                    <option value="">All</option>
+                    <option value="">-- Select Task --</option>
                 </select>
                 <span asp-validation-for="TimeLog.TaskId" class="text-danger"></span>
             </div>
@@ -43,7 +43,7 @@
             </div>
 
             <div class="py-2">
-                <label asp-for="TimeLog.Billable"></label>
+                <label asp-for="TimeLog.Billable">Billable:  &nbsp;</label>
                 <input type="checkbox" asp-for="TimeLog.Billable"/>
                 <span asp-validation-for="TimeLog.Billable" class="text-danger"></span>
             </div>

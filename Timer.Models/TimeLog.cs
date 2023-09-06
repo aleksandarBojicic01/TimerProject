@@ -40,6 +40,7 @@ namespace Timer.Models
         public TimeSpan Duration { get; set; }
         [Required]
         public bool Billable { get; set; }
+        [ValidateNever]
         public string Notes { get; set; }
     }
 }

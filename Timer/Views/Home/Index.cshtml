@@ -19,26 +19,26 @@
             <div class="py-2">
                 <label asp-for="TimeLog.CustomerId">Customer:</label>
                 <select id="cust-select" class="form-select" asp-for="TimeLog.CustomerId" asp-items="@Model.Customers">
-                    <option value="">All</option>
+                    <option value="">-- Select Customer --</option>
                 </select>
                 <span asp-validation-for="TimeLog.CustomerId" class="text-danger"></span>
             </div>
             <div class="py-2">
                 <label asp-for="TimeLog.CategoryId">Category:</label>
                 <select id="cat-select" class="form-select" asp-for="TimeLog.CategoryId" asp-items="@Model.Categories">
-                    <option value="">All</option>
+                    <option value="">-- Select Category --</option>
                 </select>
                 <span asp-validation-for="TimeLog.CategoryId" class="text-danger"></span>
             </div>
             <div class="py-2">
                 <label asp-for="TimeLog.TaskId">Task:</label>
-                    <select id="task-select" class="form-select" asp-for="TimeLog.TaskId" asp-items="@Model.Tasks">
-                    <option value="">All</option>
+                <select id="task-select" class="form-select" asp-for="TimeLog.TaskId" asp-items="@Model.Tasks">
+                    <option value="">-- Select Task --</option>
                 </select>
                 <span asp-validation-for="TimeLog.TaskId" class="text-danger"></span>
             </div>
                 <div class="py-2">
-                    <label asp-for="TimeLog.Billable"></label>
+                    <label asp-for="TimeLog.Billable">Billable: &nbsp;</label>
                     <input id="TimeLog_Billable" type="checkbox" asp-for="TimeLog.Billable" />
                     <span asp-validation-for="TimeLog.Billable" class="text-danger"></span>
                 </div>
@@ -46,6 +46,7 @@
             <div class="py-2">
                 <label asp-for="TimeLog.Notes">Notes:</label>
                 <textarea id="notesarea" asp-for="TimeLog.Notes" type="text" class="form-control" placeholder="Enter notes..."></textarea>
+                <span asp-validation-for="TimeLog.Notes" class="text-danger"></span>
             </div>
         </div>
     </div>
@@ -58,17 +59,11 @@
         </div>
         <div class="my-5  d-flex justify-content-center">
             <button type="button" id="button-start"
-                    class="m-3 btn btn-primary"
-                    data-customer-id="@Model.TimeLog.CustomerId"
-                    data-category-id="@Model.TimeLog.CategoryId"
-                    data-task-id="@Model.TimeLog.TaskId"
-                    data-billable="@Model.TimeLog.Billable"
-                    data-notes = "@Model.TimeLog.Notes"
-                    data-url="@Url.Action("StartTimer", "Home")">
-                Start
-            </button>
-            @*<a type="submit" href="@Url.Action("StartTimer", "Home")" id="button-start" class="m-3 btn btn-primary">Start</a>*@
-            <button type="submit" id="button-stop" class="m-3 btn btn-danger">End</button>
+                        class="m-3 btn btn-primary"
+                        data-url="@Url.Action("StartTimer", "Home")">
+                    Start
+                </button>
+            <button type="submit" id="button-stop" class="m-3 btn btn-danger" disabled>End</button>
         </div>
     </div>
 </div>
@@ -93,7 +88,8 @@
         buttonStart.onclick = function() {
             if (document.getElementById("cust-select").value !== "" &&
                 document.getElementById("cat-select").value !== "" &&
-                document.getElementById("task-select").value !== "") {
+                document.getElementById("task-select").value !== "" &&
+                document.getElementById("notesarea").value !== "") {
 
                 clearInterval(Interval);
                 Interval = setInterval(startTimer, 1000);
@@ -152,6 +148,17 @@
         }
         
     }
+
+    $("#button-start").on("click", function () {
+        if (document.getElementById("cust-select").value !== "" &&
+            document.getElementById("cat-select").value !== "" &&
+            document.getElementById("notesarea").value !== "" &&
+            document.getElementById("task-select").value !== "") {
+
+        $("#button-start").prop("disabled", true); 
+        $("#button-stop").prop("disabled", false);
+        }
+    });
 </script>
 
 @section Scripts{

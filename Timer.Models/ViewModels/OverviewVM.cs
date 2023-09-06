@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Timer.Models;
 
-namespace Timer.Controllers.ViewModels
-{
+namespace Timer.Models.ViewModels {
     public class OverviewVM
     {
        

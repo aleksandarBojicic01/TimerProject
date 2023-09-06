@@ -17,10 +17,8 @@ function loadDataTable() {
                 "data": "startDate",
                 "render": function (data, type, row) {
                     if (type === 'display' || type === 'filter') {
-                        // Format date for display and filtering
                         return moment(data).format('DD/MM/YYYY');
                     }
-                    // Use the original data for sorting and other operations
                     return data;
                 },
                 "width": "10%"
@@ -29,10 +27,8 @@ function loadDataTable() {
                 "data": "endDate",
                 "render": function (data, type, row) {
                     if (type === 'display' || type === 'filter') {
-                        // Format date for display and filtering
                         return moment(data).format('DD/MM/YYYY');
                     }
-                    // Use the original data for sorting and other operations
                     return data;
                 },
                 "width": "10%"

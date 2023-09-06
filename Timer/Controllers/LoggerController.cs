@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Timer.Models;
 using Timer.Models.Data;
 using Timer.Models.ViewModels;
+using Timer.Utility;
 
 namespace Timer.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
     public class LoggerController : Controller
     {
 

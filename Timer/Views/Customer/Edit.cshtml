@@ -50,12 +50,9 @@
 }
 
 <script>
-    // Optional JavaScript for additional validation or formatting
     const phoneNumberInput = document.getElementById("phoneNumber");
 
-    // You can add event listeners for further validation or formatting
     phoneNumberInput.addEventListener("input", function () {
-        // Example: Format the input as the user types (e.g., add parentheses and dashes)
         const value = this.value.replace(/\D/g, "");
         if (value.length === 9) {
             this.value = `${value.slice(0, 3)}/${value.slice(3, 6)}-${value.slice(6, 9)}`;

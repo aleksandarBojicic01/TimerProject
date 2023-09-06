@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Timer.Controllers.ViewModels;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Timer.Models.Data;
+using Timer.Models.ViewModels;
+using Timer.Utility;
 using TimeLog = Timer.Models.TimeLog;
 namespace Timer.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
     public class OverviewController : Controller
     {
         private readonly ApplicationDbContext _db;
